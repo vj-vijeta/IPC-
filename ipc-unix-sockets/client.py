@@ -4,12 +4,12 @@ import sys
 SERVER_ADDRESS = '/tmp/ipc_socket'
 
 def send_message(message):
-    # Create a UDS (Unix Domain Socket)
+    # Create a Unix Domain Socket
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
-        # Connect the socket to the server address
-        sock.connect(SERVER_ADDRESS)
-
         try:
+            # Connect the socket to the server address
+            sock.connect(SERVER_ADDRESS)
+
             # Send data
             print(f'Sending: {message}')
             sock.sendall(message.encode())
@@ -22,7 +22,8 @@ def send_message(message):
                 data = sock.recv(1024)
                 amount_received += len(data)
                 print(f'Received: {data.decode()}')
-
+        except Exception as e:
+            print(f'Error: {e}')
         finally:
             sock.close()
 
